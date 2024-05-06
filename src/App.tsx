@@ -1,8 +1,11 @@
 import './App.css';
+import Form from './Form';
 
 export default function App() {
   return (
-   <div></div>
+   <div>
+    <Form name='Michael' />
+   </div>
   )
 }
 
