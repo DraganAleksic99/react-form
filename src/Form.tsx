@@ -2,17 +2,19 @@ import { ChangeEvent, useState } from 'react';
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { TFormData } from './App';
 
 type Props = {
     name?: string;
     email?: string;
     password?: string;
+    onSubmit: (o: TFormData) => void;
     edit?: boolean;
   }
 
-export default function Form({ name = "", email = "", password = "", edit }: Props) {
+export default function Form({ name = "", email = "", password = "", onSubmit, edit }: Props) {
   const [formData, setFormData] = useState({ name, email, password });
-  
+
   const handleChange = ({ target: { name: k, value: v }}: ChangeEvent<HTMLInputElement>) => {
     setFormData({
       ...formData,
@@ -26,7 +28,12 @@ export default function Form({ name = "", email = "", password = "", edit }: Pro
     <form
       onSubmit={e => {
         e.preventDefault();
-        console.log(formData);
+        onSubmit(formData);
+        setFormData({
+          name: "",
+          email: "",
+          password: "",
+        })
       }}>
       <div className="flex flex-col space-y-4 text-left sm:max-w-lg mx-auto">
         <div className="space-y-2">
@@ -38,6 +45,7 @@ export default function Form({ name = "", email = "", password = "", edit }: Pro
             placeholder="Enter your name"
             value={n}
             onChange={handleChange}
+            required
           />
         </div>
         <div className="space-y-2">
@@ -49,6 +57,7 @@ export default function Form({ name = "", email = "", password = "", edit }: Pro
             placeholder="Enter your email"
             value={e}
             onChange={handleChange}
+            required
           />
         </div>
         <div className="space-y-2">
@@ -60,6 +69,7 @@ export default function Form({ name = "", email = "", password = "", edit }: Pro
             placeholder="Enter your password"
             value={p}
             onChange={handleChange}
+            required
           />
         </div>
         <Button className="w-full" type="submit">
